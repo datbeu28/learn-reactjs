@@ -1,17 +1,14 @@
-import { Avatar, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { AccountCircle, Close } from '@material-ui/icons';
-import CodeIcon from '@material-ui/icons/Code';
+import { AccountCircle, Close, ShoppingCart } from '@material-ui/icons';
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import Login from '../../features/Auth/components/Login';
 import Register from '../../features/Auth/components/Register';
@@ -80,7 +77,7 @@ export default function Header() {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <CodeIcon className={classes.menuButton} />
+                    <ShoppingCart className={classes.menuButton} />
                     <Typography variant="h6" className={classes.title}>
                         <Link className={classes.link} to='/'> MY SHOP</Link>
                     </Typography>
@@ -89,6 +86,9 @@ export default function Header() {
                     </NavLink>
                     <NavLink className={classes.link} to='/album'>
                         <Button color="inherit">Album</Button>
+                    </NavLink> */}
+                    {/* <NavLink className={classes.link} to='/products'>
+                        <Button color="inherit">Product</Button>
                     </NavLink> */}
 
                     {!isLoggedIn && (
