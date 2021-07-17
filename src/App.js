@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import Header from './components/header';
+import ProductFeature from './features/Product';
+
 
 function App() {
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hello React
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      {/* <p><Link to="/todo">Todo</Link></p>
+      <p><Link to="/album">Album</Link></p> */}
+
+
+      <Switch>
+        <Redirect from="/home" to="" exact />
+        <Redirect from="/post-list/:postId" to="/post/:postId" exact />
+
+        <Route path="/" component={ProductFeature} exact />
+        {/* <Route path="/todo" component={TodoFeature} />
+        <Route path="/album" component={AlbumFeature} /> */}
+        <Route path="/products" component={ProductFeature} />
+        {/* <Route component={NotFound} /> */}
+      </Switch>
+      {/* <TodoFeature /> */}
+      {/* <AlbumFeature /> */}
     </div>
   );
 }

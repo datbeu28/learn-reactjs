@@ -1,0 +1,12 @@
+.album {
+    &__imgurl {
+        & > img {
+            border-radius: 0.5rem;
+            width: 10px;
+        }
+    }
+
+    &__name {
+        font-weight: bold;
+    }
+}
