@@ -1,4 +1,4 @@
-import { Box, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { Badge, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,13 +7,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { AccountCircle, Close, ShoppingCart } from '@material-ui/icons';
+import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Login from '../../features/Auth/components/Login';
 import Register from '../../features/Auth/components/Register';
 import { logout } from '../../features/Auth/userSlice';
-
+import { cartItemsCountSelector } from '../../features/Cart/selectors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,6 +50,8 @@ export default function Header() {
     const isLoggedIn = !!loggedInUser.id;
     const [anchorEl, setAnchorEl] = useState(null);
     const dispatch = useDispatch();
+    const history = useHistory();
+    const cartItemsCount = useSelector(cartItemsCountSelector);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -66,9 +69,12 @@ export default function Header() {
         setAnchorEl(null);
     };
 
-    const handleLogutClick = () => {
+    const handleLogoutClick = () => {
         const action = logout();
         dispatch(action);
+    }
+    const handleCartClick = () => {
+        history.push('/cart')
     }
 
     const classes = useStyles();
@@ -77,7 +83,7 @@ export default function Header() {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <ShoppingCart className={classes.menuButton} />
+                    <LoyaltyIcon className={classes.menuButton} />
                     <Typography variant="h6" className={classes.title}>
                         <Link className={classes.link} to='/'> MY SHOP</Link>
                     </Typography>
@@ -90,12 +96,16 @@ export default function Header() {
                     {/* <NavLink className={classes.link} to='/products'>
                         <Button color="inherit">Product</Button>
                     </NavLink> */}
-
+                    <IconButton color="inherit" onClick={handleCartClick}>
+                        <Badge badgeContent={cartItemsCount} color="secondary">
+                            <ShoppingCart />
+                        </Badge>
+                    </IconButton>
                     {!isLoggedIn && (
                         <Button color="inherit" onClick={handleClickOpen}>Login</Button>
                     )}
                     {isLoggedIn && (
-                        <IconButton color="inherit" onClick={handleUserClick} >
+                        <IconButton color="inherit" onClick={handleUserClick}>
                             <AccountCircle></AccountCircle>
                         </IconButton>
                     )}
@@ -118,7 +128,7 @@ export default function Header() {
                 getContentAnchorEl={null}
             >
                 <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
-                <MenuItem onClick={handleLogutClick}>Logout</MenuItem>
+                <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </Menu>
 
             <Dialog

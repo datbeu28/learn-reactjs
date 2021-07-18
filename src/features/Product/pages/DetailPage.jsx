@@ -1,15 +1,16 @@
 import { Box, Container, Grid, LinearProgress, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { addToCart } from '../../Cart/cartSlice';
 import AddToCartForm from '../components/AddToCartForm';
+import ProductAdditional from '../components/ProductAdditional';
+import ProductDescription from '../components/ProductDescription';
 import ProductInfo from '../components/ProductInfo';
 import ProductMenu from '../components/ProductMenu';
-import ProductThumbnail from '../components/ProductThumbnail';
-import useProductDetail from '../hooks/useProductDetail';
-import { Route, Switch } from 'react-router-dom';
-import ProductDescription from '../components/ProductDescription';
-import ProductAdditional from '../components/ProductAdditional';
 import ProductReviews from '../components/ProductReviews';
+import ThumbnailProduct from '../components/ThumbnailProducts';
+import useProductDetail from '../hooks/useProductDetail';
 
 const useStyles = makeStyles(theme => ({
     root: {},
@@ -38,6 +39,7 @@ DetailPage.propTypes = {
 
 function DetailPage() {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const {
         params: { productId },
         url
@@ -50,8 +52,13 @@ function DetailPage() {
         </Box>
     }
 
-    const handleAddToCartSubmit = (formValues) => {
-
+    const handleAddToCartSubmit = ({ quantity }) => {
+        const action = addToCart({
+            id: product.id,
+            product,
+            quantity: quantity,
+        });
+        dispatch(action);
     }
 
     return (
@@ -60,7 +67,8 @@ function DetailPage() {
                 <Paper elevation={0}>
                     <Grid container>
                         <Grid item className={classes.left}>
-                            <ProductThumbnail product={product} />
+                            {loading ? <Box>Loading</Box> : <ThumbnailProduct product={product} />}
+
                         </Grid>
                         <Grid item className={classes.right}>
                             <ProductInfo product={product} />
